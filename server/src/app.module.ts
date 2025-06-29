@@ -3,6 +3,8 @@ import { Module } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
+
+console.log(process.env);
 @Module({
   imports: [
     TypeOrmModule.forRoot({
