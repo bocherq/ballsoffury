@@ -1,3 +1,4 @@
+import { fetchUser } from '../../../api/user';
 import { create } from 'zustand';
 
 interface PodiumPlaces {
@@ -19,12 +20,17 @@ export interface User {
 
 interface UserStore {
     user: User | null;
-    fetchUser: () => Promise<void>;
+    isLoading: boolean;
+    getUser: () => Promise<void>;
 }
 
-export const useUsersStore = create<UserStore>(() => ({
+export const useUserStore = create<UserStore>((set) => ({
     user: null,
-    fetchUser: async () => {
-        
+    isLoading: false,
+    getUser: async () => {
+        set({ isLoading: true });
+        const user = await fetchUser();
+        set({ user });
+        set({ isLoading: false });
     },
 }));

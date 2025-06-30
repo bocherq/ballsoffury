@@ -1,16 +1,24 @@
 import logo from '../../../assets/logo.png'
 import HeaderProfile from './HeaderProfile';
+import { useUserStore } from '../../../entities/user/model/useUserStore';
 
 function Header() {
-    const isSigned = true;
+    const user = useUserStore((state) => state.user);
+    const isSigned = user !== null && localStorage.getItem('accessToken');
+    const isLoading = useUserStore((state) => state.isLoading);
+
+    const onSignIn = () => {
+        console.log('Click: sign in');
+    }
 
     return (
         <>
             <header className="mt-5 text-white text-lg font-bold">
                 <div className="flex justify-between items-center">
                     <a href="/"><img src={ logo } alt="" className="max-h-[50px] mr-5" /></a>
+                    { isLoading && <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div> }
                     { isSigned && <HeaderProfile />  }
-                    { !isSigned && <a href="" className="hover:text-blue-300">Sign in</a> }
+                    { !isSigned && !isLoading && <a href="" className="hover:text-blue-300" onClick={onSignIn}>Sign in</a> }
                 </div>
                 <div className="border-t border-gray-600 my-5">
                     <nav className="py-5">
