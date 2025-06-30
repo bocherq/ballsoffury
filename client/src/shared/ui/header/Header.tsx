@@ -4,11 +4,13 @@ import { useUserStore } from '../../../entities/user/model/useUserStore';
 
 function Header() {
     const user = useUserStore((state) => state.user);
+    const getUser = useUserStore((state) => state.getUser)
     const isSigned = user !== null && localStorage.getItem('accessToken');
     const isLoading = useUserStore((state) => state.isLoading);
 
     const onSignIn = () => {
-        console.log('Click: sign in');
+        localStorage.setItem('accessToken', 'asdlkngni290nnknjnjadksnvmlm)()*23nrlsmvk');
+        getUser();
     }
 
     return (
