@@ -11,10 +11,16 @@ export class UserService {
         private userRepository: Repository<User>,
     ) { }
 
-    async createUser(createUserDto: CreateUserDTO): Promise<User | null> {
-        const existingUser = await this.userRepository.findOneBy({ email: createUserDto.email });
-        if (!createUserDto.email.includes(process.env.ALLOWED_EMAIL_DOMAIN ?? '') || existingUser) {
+    async create(createUserDto: CreateUserDTO): Promise<User | null> {
+        if (!createUserDto.email.includes(process.env.ALLOWED_EMAIL_DOMAIN ?? '')) {
+            console.log('Login attempt with an unauthorized email')
             return null;
+        }
+
+        const existingUser = await this.userRepository.findOneBy({ email: createUserDto.email });
+        if (existingUser) {
+            console.log('Login: ', existingUser);
+            return existingUser;
         }
 
         console.log('Creating user: ', createUserDto);
@@ -23,7 +29,8 @@ export class UserService {
         return await this.userRepository.save(user);
     }
 
-    async getUserById(id: number): Promise<User | null> {
+    async getById(id: number): Promise<User | null> {
         return await this.userRepository.findOneBy({ id });
     }
+
 }
