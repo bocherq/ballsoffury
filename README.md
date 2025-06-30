@@ -18,10 +18,10 @@ It automates match scheduling, bracket generation, player registration, and resu
 
 ## 🛠 Tech Stack
 
-- **Backend:** Node.js / Nest *  
-- **Frontend:** React
-- **Database:** PostgreSQL 
-- **Deployment:** Docker / VPS (DigitalOcean)
+- **Backend:** Node.js / Nest / TypeORM
+- **Frontend:** React / Zustand / Tailwind
+- **Database:** PostgreSQL
+- **Deployment:** Docker
 
 ---
 
