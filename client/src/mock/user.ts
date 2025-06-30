@@ -7,10 +7,5 @@ export const user: User = {
     email: 'nikolay.rodionov@lightspeedhq.com',
     photo: 'https://imgv3.fotor.com/images/slider-image/A-clear-close-up-photo-of-a-woman.jpg',
     rating: 220,
-    podiumPlaces: {
-        first: ['1', '2'],
-        second: [],
-        third: [],
-    },
     isAdmin: false,
 };
