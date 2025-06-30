@@ -19,7 +19,7 @@ function Header() {
                 <div className="flex justify-between items-center">
                     <a href="/"><img src={ logo } alt="" className="max-h-[50px] mr-5" /></a>
                     { isLoading && <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div> }
-                    { isSigned && <HeaderProfile />  }
+                    { isSigned && !isLoading && <HeaderProfile />  }
                     { !isSigned && !isLoading && <a href="" className="hover:text-blue-300" onClick={onSignIn}>Sign in</a> }
                 </div>
                 <div className="border-t border-gray-600 my-5">
