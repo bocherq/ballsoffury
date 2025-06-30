@@ -26,7 +26,7 @@ export class AuthController {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    res.redirect('/');
+    res.redirect(process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5173/');
   }
 
   @Post('refresh')
