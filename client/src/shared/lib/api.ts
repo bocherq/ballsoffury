@@ -35,9 +35,7 @@ api.interceptors.response.use(
         ) {
             originalRequest._retry = true;
             try {
-                console.log(123);
                 const refreshResponse = await api.post('/auth/refresh') satisfies { access_token: string };
-                console.log(refreshResponse);
 
                 const newAccessToken = refreshResponse?.access_token;
                 if (!newAccessToken) {
