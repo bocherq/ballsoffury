@@ -1,12 +1,6 @@
 import { fetchUser } from '../../../api/user';
 import { create } from 'zustand';
 
-interface PodiumPlaces {
-    first: string[];
-    second: string[];
-    third: string[];
-}
-
 export interface User {
     id: string;
     firstName: string;
@@ -14,7 +8,6 @@ export interface User {
     email: string;
     photo?: string;
     rating: number;
-    podiumPlaces: PodiumPlaces;
     isAdmin: boolean;
 }
 

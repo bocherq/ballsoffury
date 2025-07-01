@@ -1,9 +1,8 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
-import * as dotenv from 'dotenv';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
-dotenv.config({ path: '../.env' });
-console.log(`ENV: ${process.env}`);
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -17,6 +16,8 @@ console.log(`ENV: ${process.env}`);
       synchronize: true,
       autoLoadEntities: true,
     }),
+    UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
