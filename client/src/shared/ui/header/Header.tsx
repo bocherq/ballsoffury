@@ -14,7 +14,7 @@ function Header() {
                     <a href="/"><img src={ logo } alt="" className="max-h-[50px] mr-5" /></a>
                     { isLoading && <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div> }
                     { isSigned && !isLoading && <HeaderProfile />  }
-                    { !isSigned && !isLoading && <a href="http://localhost:3000/api/auth/google/login" className="hover:text-blue-300">Sign in</a> }
+                    { !isSigned && !isLoading && <a href="/api/auth/google/login" className="hover:text-blue-300">Sign in</a> }
                 </div>
                 <div className="border-t border-gray-600 my-5">
                     <nav className="py-5">
