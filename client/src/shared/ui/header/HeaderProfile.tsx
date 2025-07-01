@@ -8,7 +8,8 @@ function HeaderProfile() {
     return (
         <>
             <div className="flex items-center">
-                <a href="/profile/id" className="hidden sm:block mr-5 hover:text-blue-300">{ `${user.firstName} ${user.lastName}` }</a>
+                <a href="/profile/id" className="hidden sm:block mr-2 hover:text-blue-300">{ `${user.firstName} ${user.lastName}` }</a>
+                <span className="hidden sm:block mr-5 text-yellow-500">{ `★${user.rating}` }</span>
                 <a href="/profile/id">
                     {hasPhoto && <img src={ user.photo } alt="" className="w-[50px] h-[50px] rounded-full object-cover" />}
                     {!hasPhoto && <div className="w-[50px] h-[50px] rounded-full bg-orange-300 flex justify-center items-center">
