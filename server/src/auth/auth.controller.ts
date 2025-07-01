@@ -20,8 +20,9 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
-  async googleCallback(@Req() req, @Res() res) {
+  async googleCallback(@Req() req, @Res() res) {  
     const refreshToken = await this.authService.generateRefreshToken(req.user.id);
+    console.log('Googlecallback refreshtoken', refreshToken);
 
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
@@ -29,7 +30,7 @@ export class AuthController {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    res.redirect(process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5173/');
+    return res.redirect(process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5173/');
   }
 
   @Post('refresh')
