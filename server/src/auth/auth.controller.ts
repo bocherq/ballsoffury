@@ -20,7 +20,8 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
-  async googleCallback(@Req() req, @Res() res) {  
+  async googleCallback(@Req() req, @Res() res) { 
+    console.log('Google callback called, user:', req.user);
     const refreshToken = await this.authService.generateRefreshToken(req.user.id);
     console.log('Googlecallback refreshtoken', refreshToken);
 
