@@ -13,7 +13,7 @@ async function bootstrap() {
     const publicPath = path.join(__dirname, '..', 'public');
     app.useStaticAssets(publicPath);
     app.use((req, res, next) => {
-      if (req.path.startsWith('/api')) next();
+      if (req.path.startsWith('/api')) return next();
       res.sendFile(path.join(publicPath, 'index.html'));
     });
   } else {

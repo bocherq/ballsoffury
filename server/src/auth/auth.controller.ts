@@ -20,27 +20,16 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
-  async googleCallback(@Req() req, @Res() res) { 
-    console.log('Google callback called, user:', req.user);
+  async googleCallback(@Req() req, @Res() res) {
     const refreshToken = await this.authService.generateRefreshToken(req.user.id);
-    console.log('Googlecallback refreshtoken', refreshToken);
 
-    try {
-      res.cookie('refresh_token', refreshToken, {
-        httpOnly: true,
-        sameSite: 'lax',
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      });
-      console.log('Cookie set');
-    } catch(error) {
-      console.error('Error setting cookie:', error);
-    }
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
 
-    try {
-      return res.redirect(process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5173/');
-    } catch (error) {
-      console.error('Error redirecting:', error);
-    }
+    return res.redirect(process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5173/');
   }
 
   @Post('refresh')
