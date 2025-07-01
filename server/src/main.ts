@@ -3,6 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import * as path from 'path';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -15,7 +16,14 @@ async function bootstrap() {
       if (req.path.startsWith('/api')) next();
       res.sendFile(path.join(publicPath, 'index.html'));
     });
+  } else {
+    app.enableCors({
+      origin: 'http://localhost:5173', // или адрес твоего фронта
+      credentials: true,
+    });
   }
+
+  app.use(cookieParser());
 
   console.log(`Server starting on port ${process.env.PORT ?? 3000}`);
   await app.listen(process.env.PORT ?? 3000);

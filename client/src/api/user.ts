@@ -1,10 +1,10 @@
+import api from "../shared/lib/api";
 import type { User } from "../entities/user/model/useUserStore";
-import { user } from "../mock/user";
 
-export const fetchUser = (): Promise<User> => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(user);
-        }, 1000);
-    });
+export const fetchUser = async (): Promise<User | null> => {
+    try {
+        return await api.get<User>('/auth/me');
+    } catch(error) {
+        return null;
+    }
 }
