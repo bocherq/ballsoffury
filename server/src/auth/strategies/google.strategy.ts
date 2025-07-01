@@ -28,6 +28,5 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
             photo: profile.photos?.[0]?.value,
         });
         done(null, user);
-        return user;
     }
 }
