@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { CreateUserDTO } from 'src/user/user.dto';
-import { User } from 'src/user/user.entity';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class AuthService {
