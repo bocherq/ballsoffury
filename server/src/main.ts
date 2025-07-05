@@ -7,7 +7,7 @@ import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({transform: true}));
   app.setGlobalPrefix('api');
   if (process.env.NODE_ENV === 'production') {
     const publicPath = path.join(__dirname, '..', 'public');

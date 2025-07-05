@@ -2,6 +2,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { TournamentModule } from './tournament/tournament.module';
+import { MatchesModule } from './matches/matches.module';
 
 @Module({
   imports: [
@@ -13,11 +15,13 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-      synchronize: true,
+      synchronize: process.env.NODE_ENV === 'production' ? false : true,
       autoLoadEntities: true,
     }),
     UserModule,
     AuthModule,
+    TournamentModule,
+    MatchesModule,
   ],
   controllers: [],
   providers: [],

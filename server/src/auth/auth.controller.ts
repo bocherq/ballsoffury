@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google.guards';
 import { Request, Response } from 'express';
 import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/user.entity';
+import { User } from 'src/entities/user.entity';
 import { JWTGuard } from './guards/jwt.guards';
 import { log } from 'console';
 
