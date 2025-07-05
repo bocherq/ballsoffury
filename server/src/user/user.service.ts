@@ -29,8 +29,15 @@ export class UserService {
         return await this.userRepository.save(user);
     }
 
+    async get(): Promise<User[]> {
+        return await this.userRepository.find();
+    } 
+
     async getById(id: number): Promise<User | null> {
-        return await this.userRepository.findOneBy({ id });
+        return await this.userRepository.findOne({
+            where: { id },
+            relations: ['tournamentParticipations', 'tournamentParticipations.tournament'],
+        });
     }
 
 }

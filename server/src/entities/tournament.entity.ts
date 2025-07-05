@@ -38,9 +38,9 @@ export class Tournament {
     @ManyToOne(() => Player, { nullable: true, eager: true })
     thirdPlace: Player;
 
-    @OneToMany(() => Player, player => player.tournament, { cascade: true, eager: true })
+    @OneToMany(() => Player, player => player.tournament, { cascade: true })
     players: Player[];
 
-    @OneToMany(() => Match, match => match.tournament, { cascade: true, eager: true })
+    @OneToMany(() => Match, match => match.tournament, { cascade: true })
     matches: Match[];
 }

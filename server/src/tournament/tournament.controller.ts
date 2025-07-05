@@ -36,10 +36,8 @@ export class TournamentController {
   @Post('join')
   @HttpCode(HttpStatus.OK)
   async join(@Req() req, @Body() joinData: { tournamentId: number }): Promise<Tournament | null> {
-    console.log('join data: ', joinData);
     const token = req.headers.authorization.split(' ')[1];
     const { id } = this.authService.verifyAccessToken(token);
-    console.log('user id ', id)
     return await this.tournamentService.joinTournament(joinData.tournamentId, id);
   }
 } 

@@ -11,7 +11,7 @@ export class Player {
     @ManyToOne(() => Tournament, tournament => tournament.players, { onDelete: 'CASCADE' })
     tournament: Tournament;
 
-    @ManyToOne(() => User, user => user.tournamentParticipations, { eager: true })
+    @ManyToOne(() => User, user => user.tournamentParticipations)
     user: User;
 
     @Column({ default: 0 })
