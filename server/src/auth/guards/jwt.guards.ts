@@ -22,8 +22,8 @@ export class JWTGuard implements CanActivate {
 
         const validToken = this.authService.verifyAccessToken(token);
 
-        if (validToken?.error) {
-            throw new UnauthorizedException(validToken.error);
+        if (!validToken || validToken?.error) {
+            throw new UnauthorizedException(validToken.error || 'Invalid token');
         }
 
         return (request.token = token);
