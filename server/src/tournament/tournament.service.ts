@@ -10,6 +10,12 @@ export class TournamentService {
         private tournamentRepository: Repository<Tournament>
     ) {}
 
+    async get() {
+        return await this.tournamentRepository.find({
+            relations: ['players', 'matches'],
+        });
+    }
+
     async create(createTournament: CreateTournamentDTO) {
         const tournament = this.tournamentRepository.create(createTournament);
         console.log('Create tournament: ', createTournament);

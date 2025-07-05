@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, HttpCode, HttpStatus, Body } from '@nestjs/common';
+import { Controller, Post, UseGuards, HttpCode, HttpStatus, Body, Get } from '@nestjs/common';
 import { TournamentService } from './tournament.service';
 import { IsAdmin } from 'src/auth/guards/admin.guards';
 import { CreateTournamentDTO } from './tournament.dto';
@@ -11,6 +11,12 @@ export class TournamentController {
   @Post('create')
   @HttpCode(HttpStatus.OK)
   async create(@Body() createTournament: CreateTournamentDTO) {
-    return this.tournamentService.create(createTournament);
+    return await this.tournamentService.create(createTournament);
+  }
+
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async get() {
+    return await this.tournamentService.get();
   }
 } 
