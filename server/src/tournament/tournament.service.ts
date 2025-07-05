@@ -10,8 +10,9 @@ export class TournamentService {
         private tournamentRepository: Repository<Tournament>
     ) {}
 
-    async create(createTournamentDTO: CreateTournamentDTO) {
-        const tournament = this.tournamentRepository.create(createTournamentDTO);
+    async create(createTournament: CreateTournamentDTO) {
+        const tournament = this.tournamentRepository.create(createTournament);
+        console.log('Create tournament: ', createTournament);
         return await this.tournamentRepository.save(tournament);
     }
 }

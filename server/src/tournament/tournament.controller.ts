@@ -11,7 +11,6 @@ export class TournamentController {
   @Post('create')
   @HttpCode(HttpStatus.OK)
   async create(@Body() createTournament: CreateTournamentDTO) {
-    console.log(createTournament);
     return this.tournamentService.create(createTournament);
   }
 } 
