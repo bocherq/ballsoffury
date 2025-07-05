@@ -21,4 +21,11 @@ export class TournamentService {
         console.log('Create tournament: ', createTournament);
         return await this.tournamentRepository.save(tournament);
     }
+
+    async getById(id: number) {
+        return await this.tournamentRepository.findOne({
+            where: { id },
+            relations: ['players', 'matches'],
+        });
+    }
 }
