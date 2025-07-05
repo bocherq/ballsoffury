@@ -10,10 +10,10 @@ export class Match {
     @ManyToOne(() => Tournament, tournament => tournament.matches, { onDelete: 'CASCADE' })
     tournament: Tournament;
 
-    @ManyToOne(() => Player)
+    @ManyToOne(() => Player, player => player.matchesAsPlayer1)
     player1: Player;
 
-    @ManyToOne(() => Player)
+    @ManyToOne(() => Player, player => player.matchesAsPlayer2)
     player2: Player;
 
     @Column({ nullable: true })

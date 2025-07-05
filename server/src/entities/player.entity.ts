@@ -1,6 +1,7 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, ManyToOne, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Tournament } from "./tournament.entity";
 import { User } from "./user.entity";
+import { Match } from "./match.entity";
 
 @Entity()
 export class Player {
@@ -24,4 +25,10 @@ export class Player {
 
     @Column({ default: 0 })
     draws: number;
+
+    @OneToMany(() => Match, match => match.player1)
+    matchesAsPlayer1: Match[];
+
+    @OneToMany(() => Match, match => match.player2)
+    matchesAsPlayer2: Match[];
 }
