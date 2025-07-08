@@ -2,6 +2,7 @@ import { Entity, ManyToOne, PrimaryGeneratedColumn, Column, OneToMany } from "ty
 import { Tournament } from "./tournament.entity";
 import { User } from "./user.entity";
 import { Match } from "./match.entity";
+import { Group } from "./group.entity";
 
 @Entity()
 export class Player {
@@ -31,4 +32,7 @@ export class Player {
 
     @OneToMany(() => Match, match => match.player2)
     matchesAsPlayer2: Match[];
+
+    @ManyToOne(() => Group, group => group.players, { nullable: true })
+    group: Group;
 }

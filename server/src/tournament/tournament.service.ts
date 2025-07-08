@@ -30,7 +30,7 @@ export class TournamentService {
     async getById(id: number) {
         return await this.tournamentRepository.findOne({
             where: { id },
-            relations: ['players', 'matches'],
+            relations: ['players', 'players.user', 'matches'],
         });
     }
 

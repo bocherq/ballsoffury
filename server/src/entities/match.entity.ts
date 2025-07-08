@@ -1,6 +1,7 @@
+import { Player } from "./player.entity";
 import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from "typeorm";
 import { Tournament } from "./tournament.entity";
-import { Player } from "./player.entity";
+import { Group } from "./group.entity";
 
 @Entity()
 export class Match {
@@ -15,6 +16,18 @@ export class Match {
 
     @ManyToOne(() => Player, player => player.matchesAsPlayer2)
     player2: Player;
+
+    @Column({ type: 'int', nullable: true })
+    player1RatingBefore: number;
+
+    @Column({ type: 'int', nullable: true })
+    player1RatingAfter: number;
+
+    @Column({ type: 'int', nullable: true })
+    player2RatingBefore: number;
+
+    @Column({ type: 'int', nullable: true })
+    player2RatingAfter: number;
 
     @Column({ nullable: true })
     player1Score: number;
@@ -42,4 +55,7 @@ export class Match {
 
     @ManyToOne(() => Match, { nullable: true })
     previousMatch2: Match;
+
+    @ManyToOne(() => Group, group => group.matches, { nullable: true })
+    group: Group;
 }
