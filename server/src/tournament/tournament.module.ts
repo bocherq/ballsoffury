@@ -14,9 +14,9 @@ import { Group } from 'src/entities/group.entity';
     TypeOrmModule.forFeature([Tournament, Player, Group]),
     AuthModule,
     UserModule,
-    MatchesModule,
   ],
   controllers: [TournamentController],
   providers: [TournamentService],
+  exports: [TournamentService],
 })
 export class TournamentModule {}

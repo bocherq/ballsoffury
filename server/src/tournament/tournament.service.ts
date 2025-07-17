@@ -37,6 +37,13 @@ export class TournamentService {
         });
     }
 
+    async getGroupById(id: number) {
+        return await this.groupRepository.findOne({
+            where: { id },
+            relations: ['players', 'matches'],
+        });
+    }
+
     async joinTournament(tournamentId: number, userId: number) {
         const existingTournament = await this.getById(tournamentId);
         if (!existingTournament) throw new NotFoundException('Tournament not found');
