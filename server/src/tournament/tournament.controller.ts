@@ -40,4 +40,10 @@ export class TournamentController {
     const { id } = this.authService.verifyAccessToken(token);
     return await this.tournamentService.joinTournament(joinData.tournamentId, id);
   }
+
+  @UseGuards(IsAdmin)
+  @Post('start/:id')
+  async start(@Param('id') id: string) {
+    return await this.tournamentService.start(Number(id));
+  }
 } 

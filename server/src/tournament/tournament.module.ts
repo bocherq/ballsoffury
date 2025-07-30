@@ -13,6 +13,7 @@ import { Group } from 'src/entities/group.entity';
   imports: [
     TypeOrmModule.forFeature([Tournament, Player, Group]),
     AuthModule,
+    MatchesModule,
     UserModule,
   ],
   controllers: [TournamentController],

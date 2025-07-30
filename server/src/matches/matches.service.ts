@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from 'src/entities/match.entity';
-import { TournamentService } from 'src/tournament/tournament.service';
 import { Repository } from 'typeorm';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 import { MatchResultDTO } from './matches.dto';
+import { Player } from 'src/entities/player.entity';
 import { UserService } from 'src/user/user.service';
+import { Tournament } from 'src/entities/tournament.entity';
 
 @Injectable()
 export class MatchesService {
     constructor(
         @InjectRepository(Match)
         private matchRepository: Repository<Match>,
-        private tournamentService: TournamentService,
+        @InjectRepository(Player)
+        private playerRepository: Repository<Player>,
         private userService: UserService,
     ) {}
 
@@ -37,20 +39,14 @@ export class MatchesService {
         match.player1RatingBefore = match.player1.user.rating;
         match.player2RatingBefore = match.player2.user.rating;
 
-        await this.tournamentService.updatePlayerStats(match);
+        await this.updatePlayerStats(match);
         const updatedMatch = await this.userService.updateUserRating(match);
 
         return await this.matchRepository.save(updatedMatch);
     }
 
-    async createGroupMatches(tournamentId: number, groupId: number) {
-        const tournament = await this.tournamentService.getById(tournamentId);
-
-        if (!tournament) {
-            throw new NotFoundException('Tournament not found');
-        }
-
-        const group = await this.tournamentService.getGroupById(groupId);
+    async createGroupMatches(tournament: Tournament, groupId: number) {
+        const group = tournament.groups.find((group) => group.id === groupId);
 
         if (!group) {
             throw new NotFoundException('Group not found');
@@ -77,13 +73,7 @@ export class MatchesService {
         console.log(`${group.name} matches was saved`);
     }
 
-    async createRoundRobinMatches(tournamentId: number) {
-        const tournament = await this.tournamentService.getById(tournamentId);
-
-        if (!tournament) {
-            throw new NotFoundException('Tournament not found');
-        }
-
+    async createRoundRobinMatches(tournament: Tournament) {
         const players = tournament.players;
 
         if (players.length < 2) {
@@ -104,5 +94,34 @@ export class MatchesService {
         }
 
         await this.matchRepository.save(matches);
+    }
+
+    async updatePlayerStats(match: Match) {
+        const { player1, player2, player1Score, player2Score } = match;
+        const isDraw = player1Score === player2Score;
+        const player1IsWinner = player1Score > player2Score && !isDraw;
+        const player2IsWinner = player2Score > player1Score && !isDraw;
+
+        if (isDraw) {
+            player1.draws = player1.draws + 1;
+            player2.draws = player2.draws + 1;
+            player1.score = player1.score + 1;
+            player2.score = player2.score + 1;
+
+            await this.playerRepository.save([player1, player2]);
+            return;
+        }
+
+        player1.wins = player1IsWinner ? player1.wins + 1 : player1.wins;
+        player1.losses = player2IsWinner ? player1.losses + 1 : player1.losses;
+        player1.score = player1IsWinner ? player1.score + 2 : player1.score;
+        player1.scoreDifference = player1Score - player2Score;
+
+        player2.wins = player2IsWinner ? player2.wins + 1 : player2.wins;
+        player2.losses = player1IsWinner ? player2.losses + 1 : player2.losses;
+        player2.score = player2IsWinner ? player2.score + 2 : player1.score;
+        player2.scoreDifference = player2Score - player1Score;
+
+        await this.playerRepository.save([player1, player2]);
     }
 }

@@ -56,9 +56,8 @@ export class UserService {
         user2.rating = player2rating;
 
         await this.userRepository.save([user1, user2]);
-        console.log(match);
 
-        return { ...match };
+        return match;
     }
 
 }
