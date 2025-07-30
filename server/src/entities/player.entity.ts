@@ -35,4 +35,7 @@ export class Player {
 
     @ManyToOne(() => Group, group => group.players, { nullable: true })
     group: Group;
+
+    @Column({ default: 0 })
+    scoreDifference: number;
 }

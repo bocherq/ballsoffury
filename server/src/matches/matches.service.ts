@@ -4,6 +4,8 @@ import { Match } from 'src/entities/match.entity';
 import { TournamentService } from 'src/tournament/tournament.service';
 import { Repository } from 'typeorm';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { MatchResultDTO } from './matches.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class MatchesService {
@@ -11,7 +13,35 @@ export class MatchesService {
         @InjectRepository(Match)
         private matchRepository: Repository<Match>,
         private tournamentService: TournamentService,
+        private userService: UserService,
     ) {}
+
+    async setMatchResult(matchId: number, matchResult: MatchResultDTO): Promise<Match> {
+        const match = await this.matchRepository.findOne({
+            where: { id: matchId },
+            relations: ['player1', 'player2', 'tournament'],
+        });
+
+        if (!match) {
+            throw new NotFoundException('Match not found');
+        }
+
+        if (match.player1Score && match.player2Score) {
+            throw new BadRequestException('Match result already submitted');
+        }
+
+        const { player1Score, player2Score } = matchResult;
+
+        match.player1Score = player1Score;
+        match.player2Score = player2Score;
+        match.player1RatingBefore = match.player1.user.rating;
+        match.player2RatingBefore = match.player2.user.rating;
+
+        await this.tournamentService.updatePlayerStats(match);
+        const updatedMatch = await this.userService.updateUserRating(match);
+
+        return await this.matchRepository.save(updatedMatch);
+    }
 
     async createGroupMatches(tournamentId: number, groupId: number) {
         const tournament = await this.tournamentService.getById(tournamentId);
