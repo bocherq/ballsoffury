@@ -52,8 +52,7 @@ export class AuthController {
   @UseGuards(JWTGuard)
   @Get('/me')
   async getAuthorizedUserData(@Req() req): Promise<User | null> {
-    const token = req.headers.authorization.split(' ')[1];
-    const validToken = this.authService.verifyAccessToken(token);
-    return await this.userService.getById(validToken.id);
+    const userPayload = req.user;
+    return await this.userService.getById(userPayload.id);
   }
 }

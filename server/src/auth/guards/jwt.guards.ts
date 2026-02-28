@@ -8,24 +8,25 @@ export class JWTGuard implements CanActivate {
         private authService: AuthService
     ) {}
 
-    // @ts-ignore
-    async canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
+        const authHeader = request.headers.authorization.trim();
+        if (!authHeader) throw new UnauthorizedException('Access token is missing');
 
-        if (!request.headers.authorization) throw new UnauthorizedException('Access token is missing');
-
-        const token = request.headers.authorization.split(' ')[1];
-
-        if (!token) {
-            throw new UnauthorizedException('Access token is missing');
+        const [ bearer, token ] = authHeader.split(' ');
+        if (bearer !== 'Bearer' || !token) {
+            throw new UnauthorizedException('Invalid authorization header');
         }
 
-        const validToken = this.authService.verifyAccessToken(token);
+        const payload = await this.authService.verifyAccessToken(token);
 
-        if (!validToken || validToken?.error) {
-            throw new UnauthorizedException(validToken.error || 'Invalid token');
+        if (!payload || payload?.error) {
+            throw new UnauthorizedException(payload.error || 'Invalid token');
         }
 
-        return (request.token = token);
+        request.user = payload;
+        request.token = token;
+
+        return true;
     }
 }
