@@ -17,10 +17,12 @@ interface UserStore {
     getUser: () => Promise<void>;
 }
 
-export const useUserStore = create<UserStore>((set) => ({
+export const useUserStore = create<UserStore>((set, get) => ({
     user: null,
     isLoading: false,
     getUser: async () => {
+        const { isLoading } = get();
+        if (isLoading) return;
         set({ isLoading: true });
         const user = await fetchUser();
         set({ user });
