@@ -8,13 +8,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { GoogleStrategy } from './strategies/google.strategy';
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '../.env',
-    }),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY || 'default_secret',
-      signOptions: { expiresIn: '10m' },
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET_KEY || 'default_secret',
+        signOptions: { expiresIn: '10m' },
+      }),
     }),
     ConfigModule.forFeature(googleConfig),
     UserModule,
